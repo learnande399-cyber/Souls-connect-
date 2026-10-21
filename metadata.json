@@ -1,0 +1,6 @@
+{
+  "name": "SoulConnect",
+  "description": "Discover people, share your world, and start conversations that matter on SoulConnect.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

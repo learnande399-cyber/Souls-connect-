@@ -1,0 +1,211 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public and semi-public user profile data",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 256 },
+        "displayName": { "type": "string", "maxLength": 60, "minLength": 1 },
+        "username": { "type": "string", "maxLength": 30, "minLength": 3, "pattern": "^[a-zA-Z0-9_]+$" },
+        "photoURL": { "type": "string", "maxLength": 500000 },
+        "bio": { "type": "string", "maxLength": 300 },
+        "age": { "type": "number" },
+        "gender": { "type": "string", "enum": ["male", "female", "non-binary", "prefer_not_to_say"] },
+        "city": { "type": "string", "maxLength": 100 },
+        "interests": { "type": "array" },
+        "showAge": { "type": "boolean" },
+        "showGender": { "type": "boolean" },
+        "showCity": { "type": "boolean" },
+        "showOnlineStatus": { "type": "boolean" },
+        "isOnline": { "type": "boolean" },
+        "lastActive": { "type": "string", "format": "date-time" },
+        "isSuspended": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "displayName", "username", "createdAt"]
+    },
+    "PrivateInfo": {
+      "title": "PrivateInfo",
+      "description": "Private sensitive user info like full date of birth",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128 },
+        "birthDate": { "type": "string", "maxLength": 20 },
+        "email": { "type": "string", "maxLength": 256 }
+      },
+      "required": ["userId"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Social feed post shared with the community",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 60 },
+        "authorUsername": { "type": "string", "maxLength": 30 },
+        "authorAvatar": { "type": "string", "maxLength": 500000 },
+        "content": { "type": "string", "maxLength": 2000, "minLength": 1 },
+        "imageUrl": { "type": "string", "maxLength": 500000 },
+        "category": { "type": "string", "maxLength": 50 },
+        "likesCount": { "type": "number" },
+        "commentsCount": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["authorId", "authorName", "content", "createdAt"]
+    },
+    "PostLike": {
+      "title": "PostLike",
+      "description": "Like record on a post",
+      "type": "object",
+      "properties": {
+        "postId": { "type": "string", "maxLength": 128 },
+        "userId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "userId", "createdAt"]
+    },
+    "Comment": {
+      "title": "Comment",
+      "description": "Comment on a community post",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "postId": { "type": "string", "maxLength": 128 },
+        "authorId": { "type": "string", "maxLength": 128 },
+        "authorName": { "type": "string", "maxLength": 60 },
+        "authorUsername": { "type": "string", "maxLength": 30 },
+        "authorAvatar": { "type": "string", "maxLength": 500000 },
+        "text": { "type": "string", "maxLength": 500, "minLength": 1 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["postId", "authorId", "authorName", "text", "createdAt"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "One-to-one private conversation between two users",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 256 },
+        "participants": { "type": "array" },
+        "participantDetails": { "type": "object" },
+        "lastMessageText": { "type": "string", "maxLength": 1000 },
+        "lastMessageSenderId": { "type": "string", "maxLength": 128 },
+        "lastMessageTimestamp": { "type": "string", "format": "date-time" },
+        "unreadCounts": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["participants", "createdAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Chat message inside a conversation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "conversationId": { "type": "string", "maxLength": 256 },
+        "senderId": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 60 },
+        "text": { "type": "string", "maxLength": 2000 },
+        "imageUrl": { "type": "string", "maxLength": 1000000 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "isRead": { "type": "boolean" }
+      },
+      "required": ["conversationId", "senderId", "createdAt"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "In-app notifications for users",
+      "type": "object",
+      "properties": {
+        "recipientId": { "type": "string", "maxLength": 128 },
+        "senderId": { "type": "string", "maxLength": 128 },
+        "senderName": { "type": "string", "maxLength": 60 },
+        "senderAvatar": { "type": "string", "maxLength": 500000 },
+        "type": { "type": "string", "enum": ["new_message", "post_like", "post_comment", "moderation"] },
+        "title": { "type": "string", "maxLength": 100 },
+        "message": { "type": "string", "maxLength": 300 },
+        "linkType": { "type": "string", "enum": ["chat", "post", "profile", "system"] },
+        "linkId": { "type": "string", "maxLength": 256 },
+        "isRead": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["recipientId", "type", "message", "createdAt"]
+    },
+    "Block": {
+      "title": "Block",
+      "description": "Block record between users",
+      "type": "object",
+      "properties": {
+        "blockerId": { "type": "string", "maxLength": 128 },
+        "blockedId": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["blockerId", "blockedId", "createdAt"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "User or content report for moderation",
+      "type": "object",
+      "properties": {
+        "reporterId": { "type": "string", "maxLength": 128 },
+        "targetType": { "type": "string", "enum": ["user", "post", "comment", "message"] },
+        "targetId": { "type": "string", "maxLength": 128 },
+        "targetUserId": { "type": "string", "maxLength": 128 },
+        "targetContent": { "type": "string", "maxLength": 1000 },
+        "reason": { "type": "string", "maxLength": 100 },
+        "details": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["pending", "reviewed", "dismissed", "actioned"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reporterId", "targetType", "targetId", "reason", "status", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile with display settings and presence"
+    },
+    "/users/{userId}/private/info": {
+      "schema": "PrivateInfo",
+      "description": "Private user information isolated from public reads"
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Community posts feed"
+    },
+    "/posts/{postId}/likes/{userId}": {
+      "schema": "PostLike",
+      "description": "Likes on individual posts"
+    },
+    "/posts/{postId}/comments/{commentId}": {
+      "schema": "Comment",
+      "description": "Comments on community posts"
+    },
+    "/conversations/{conversationId}": {
+      "schema": "Conversation",
+      "description": "1-on-1 private conversation metadata"
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages inside a conversation"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "Notification",
+      "description": "In-app notifications for users"
+    },
+    "/blocks/{blockId}": {
+      "schema": "Block",
+      "description": "User blocks record"
+    },
+    "/reports/{reportId}": {
+      "schema": "Report",
+      "description": "Moderation reports submitted by users"
+    }
+  }
+}

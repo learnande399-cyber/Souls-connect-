@@ -1,0 +1,14 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Public read for community post photos so other users can see them
+    // Authenticated write strictly restricted to author's user ID with 5MB & image type validation
+    match /posts/{userId}/{imageId} {
+      allow read: if true;
+      allow write: if request.auth != null && request.auth.uid == userId
+                   && request.resource.size <= 5 * 1024 * 1024
+                   && request.resource.contentType.matches('image/(jpeg|png|webp)');
+      allow delete: if request.auth != null && (request.auth.uid == userId || request.auth.token.email == 'learnande399@gmail.com');
+    }
+  }
+}
